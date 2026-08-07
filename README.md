@@ -7,7 +7,7 @@
 # Architecture
 
 <p align="center">
-  <img src="docs/architecture.png" alt="SOC Architecture" width="900">
+  <img src="Soc-K8s-lab/docs/architecture.png" alt="SOC Architecture" width="900">
 </p>
 
 > Save the architecture diagram as `docs/architecture.png`.
