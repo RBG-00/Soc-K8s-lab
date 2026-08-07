@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: mariadb
+  namespace: web
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mariadb
+
+  template:
+    metadata:
+      labels:
+        app: mariadb
+
+    spec:
+      containers:
+
+      - name: mariadb
+
+        image: mariadb:11
+
+        ports:
+        - containerPort: 3306
+
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: root
+
+        - name: MARIADB_DATABASE
+          value: dvwa
+
+        - name: MARIADB_USER
+          value: dvwa
+
+        - name: MARIADB_PASSWORD
+          value: password
+
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+
+          limits:
+            cpu: "500m"
+            memory: "512Mi"

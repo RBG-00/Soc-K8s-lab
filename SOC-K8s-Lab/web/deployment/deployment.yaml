@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: dvwa
+  namespace: web
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: dvwa
+
+  template:
+    metadata:
+      labels:
+        app: dvwa
+
+    spec:
+      containers:
+        - name: dvwa
+          image: vuln:1.0
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 80
+
+          env:
+            - name: DB_SERVER
+              value: mariadb
+
+            - name: DB_DATABASE
+              value: dvwa
+
+            - name: DB_USER
+              value: dvwa
+
+            - name: DB_PASSWORD
+              value: password
+
+            - name: DB_PORT
+              value: "3306"
+
+            - name: DEFAULT_SECURITY_LEVEL
+              value: low
+
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

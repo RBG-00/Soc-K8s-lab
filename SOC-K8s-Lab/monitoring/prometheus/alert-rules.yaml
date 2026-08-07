@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: prometheus-alert-rules
+  namespace: monitoring
+
+data:
+  alerts.yml: |
+    groups:
+      - name: kubernetes-lab-alerts
+        rules:
+
+          # Ubuntu Pod غير جاهز
+          - alert: UbuntuPodDown
+            expr: |
+              kube_pod_status_ready{
+                namespace="linux",
+                pod=~"ubuntu.*",
+                condition="true"
+              } == 0
+            for: 30s
+
+            labels:
+              severity: critical
+              service: ubuntu
+
+            annotations:
+              summary: "Ubuntu Pod is down"
+              description: "Ubuntu Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has not been ready for more than 30 seconds."
+
+          # DVWA Pod غير جاهز
+          - alert: DVWAPodDown
+            expr: |
+              kube_pod_status_ready{
+                namespace="web",
+                pod=~"dvwa.*",
+                condition="true"
+              } == 0
+            for: 30s
+
+            labels:
+              severity: critical
+              service: dvwa
+
+            annotations:
+              summary: "DVWA web server is down"
+              description: "DVWA Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has not been ready for more than 30 seconds."
+
+          # استهلاك CPU على Linux Node
+          - alert: LinuxNodeHighCPU
+            expr: |
+              100 - (
+                avg by(instance) (
+                  rate(node_cpu_seconds_total{
+                    job="linux-node-exporter",
+                    mode="idle"
+                  }[2m])
+                ) * 100
+              ) > 80
+            for: 1m
+
+            labels:
+              severity: warning
+              service: linux-node
+
+            annotations:
+              summary: "High CPU usage on Linux node"
+              description: "CPU usage on {{ $labels.instance }} has exceeded 80% for more than one minute. Current value: {{ printf \"%.2f\" $value }}%."
+
+          # استهلاك Memory على Linux Node
+          - alert: LinuxNodeHighMemory
+            expr: |
+              100 * (
+                1 -
+                (
+                  node_memory_MemAvailable_bytes{
+                    job="linux-node-exporter"
+                  }
+                  /
+                  node_memory_MemTotal_bytes{
+                    job="linux-node-exporter"
+                  }
+                )
+              ) > 80
+            for: 1m
+
+            labels:
+              severity: warning
+              service: linux-node
+
+            annotations:
+              summary: "High memory usage on Linux node"
+              description: "Memory usage on {{ $labels.instance }} has exceeded 80% for more than one minute. Current value: {{ printf \"%.2f\" $value }}%."

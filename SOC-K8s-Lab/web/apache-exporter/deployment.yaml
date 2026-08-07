@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache-exporter
+  template:
+    metadata:
+      labels:
+        app: apache-exporter
+    spec:
+      containers:
+      - name: apache-exporter
+        image: lusotycoon/apache-exporter:v1.0.8
+        args:
+          - --scrape_uri=http://dvwa.web.svc.cluster.local/server-status?auto
+        ports:
+          - containerPort: 9117
