@@ -392,14 +392,14 @@ The project includes dashboards for:
 
 ---
 
-# Screenshots
+# Documentation & Screenshots
 
-## System Architecture
+## Project Documentation
 
-Place the architecture image here.
+The complete project documentation, including the deployment guide, architecture, implementation details, attack scenarios, and dashboards, is available in the **docs/** directory.
 
-```
-docs/architecture.png
+```text
+docs/
 ```
 
 
