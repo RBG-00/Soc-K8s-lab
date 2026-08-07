@@ -402,13 +402,7 @@ Place the architecture image here.
 docs/architecture.png
 ```
 
-You can also add screenshots of:
 
-- Wazuh Dashboard
-- Grafana Dashboard
-- TheHive Cases
-- Prometheus
-- Attack Detection
 
 ---
 
@@ -416,7 +410,6 @@ You can also add screenshots of:
 
 - Kubernetes-native deployment for Wazuh
 - Kubernetes-native deployment for TheHive
-- Slack Notifications
 - Email Notifications
 - Active Response Automation
 - CI/CD Pipeline
